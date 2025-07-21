@@ -52,7 +52,7 @@ setup(){
 
 <!-- Composition API Simplified Version -->
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
   const message = 'Hello Vue!';
   const status = ref("pending");
@@ -81,6 +81,17 @@ import { ref } from 'vue';
   const deleteTask = (index) => {
     tasks.value.splice(index, 1); // Remove the task at the specified index
   };
+
+  onMounted(async() => {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+      const data = await response.json();
+      tasks.value = data.slice(0, 5).map(todo => todo.title); // Fetching first 5 tasks
+    } catch (error) {
+      console.error('Error during fetching tasks:', error);
+      
+    }
+  });
 </script>
 
 <template>
