@@ -1,7 +1,7 @@
-<script>
+<!-- <script>
 
-// options API version of Vue.js is used here, which is the traditional way of defining components.
-// This is a simple Vue.js component that demonstrates data binding, conditional rendering, and event handling.
+options API version of Vue.js is used here, which is the traditional way of defining components.
+This is a simple Vue.js component that demonstrates data binding, conditional rendering, and event handling.
 export default {
   data() {
     return {
@@ -23,6 +23,31 @@ export default {
     }
   }
 };
+</script> -->
+
+<!-- Composition API -->
+<script>
+import { ref } from 'vue';
+export default {
+setup(){
+  const message = 'Hello Vue!';
+  const status = ref("pending");
+  const tasks = ref(["task one", "task two", "task three"]);
+  const link = "https://www.google.com/";
+
+  const toggleStatus = () => {
+    if (status.value === 'active') {
+      status.value = 'pending';
+    } else if (status.value === 'pending') {
+      status.value = 'inactive';
+    } else {
+      status.value = 'active';
+    }
+  };
+
+  return { message, status, tasks, link, toggleStatus };
+}
+};
 </script>
 
 
@@ -32,6 +57,8 @@ export default {
  <p v-if="status==='active'">User is active</p>
  <p v-else-if="status==='pending'">User is pending</p>
  <p v-else>User is inactive</p>
+
+
 
  <h3>tasks</h3>
  <ul>
