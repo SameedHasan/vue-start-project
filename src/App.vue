@@ -26,7 +26,7 @@ export default {
 </script> -->
 
 <!-- Composition API -->
-<script>
+<!-- <script>
 import { ref } from 'vue';
 export default {
 setup(){
@@ -48,9 +48,40 @@ setup(){
   return { message, status, tasks, link, toggleStatus };
 }
 };
+</script> -->
+
+<!-- Composition API Simplified Version -->
+<script setup>
+import { ref } from 'vue';
+
+  const message = 'Hello Vue!';
+  const status = ref("pending");
+  const tasks = ref(["task one", "task two", "task three"]);
+  const link = "https://www.google.com/";
+
+  const newTask = ref('');
+
+  const toggleStatus = () => {
+    if (status.value === 'active') {
+      status.value = 'pending';
+    } else if (status.value === 'pending') {
+      status.value = 'inactive';
+    } else {
+      status.value = 'active';
+    }
+  };
+
+  const addTask = () => {
+    if (newTask.value.trim() !== '') {
+      tasks.value.push(newTask.value);
+      newTask.value = ''; // Clear the input field after adding the task
+    }
+  };
+
+  const deleteTask = (index) => {
+    tasks.value.splice(index, 1); // Remove the task at the specified index
+  };
 </script>
-
-
 
 <template>
  <h1>{{message}} </h1>
@@ -58,13 +89,17 @@ setup(){
  <p v-else-if="status==='pending'">User is pending</p>
  <p v-else>User is inactive</p>
 
-
+ <form @submit.prevent="addTask">
+  <label for="newTask">Add Task</label>
+  <input type="text" id="newTask" name="newTask" v-model="newTask" />
+  <button type="submit">Submit</button>
+ </form>
 
  <h3>tasks</h3>
  <ul>
   <li v-for="(task,index) in tasks" :key="task">
     <span>{{ task }}</span>
-
+    <button @click="deleteTask(index)">X</button>
     </li>
  </ul>
 
