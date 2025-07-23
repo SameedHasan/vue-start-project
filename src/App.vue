@@ -1,126 +1,13 @@
-<!-- <script>
-
-options API version of Vue.js is used here, which is the traditional way of defining components.
-This is a simple Vue.js component that demonstrates data binding, conditional rendering, and event handling.
-export default {
-  data() {
-    return {
-      message: 'Hello Vue!',
-      status:"pending",
-      tasks:["task one", "task two", "task three"],
-      link:"https://www.google.com/"
-    };
-  },
-  methods: {
-    toggleStatus() {
-      if (this.status === 'active') {
-        this.status = 'pending';
-      } else if (this.status === 'pending') {
-        this.status = 'inactive';
-      } else {
-        this.status = 'active';
-      }
-    }
-  }
-};
-</script> -->
-
-<!-- Composition API -->
-<!-- <script>
-import { ref } from 'vue';
-export default {
-setup(){
-  const message = 'Hello Vue!';
-  const status = ref("pending");
-  const tasks = ref(["task one", "task two", "task three"]);
-  const link = "https://www.google.com/";
-
-  const toggleStatus = () => {
-    if (status.value === 'active') {
-      status.value = 'pending';
-    } else if (status.value === 'pending') {
-      status.value = 'inactive';
-    } else {
-      status.value = 'active';
-    }
-  };
-
-  return { message, status, tasks, link, toggleStatus };
-}
-};
-</script> -->
-
-<!-- Composition API Simplified Version -->
 <script setup>
-import { onMounted, ref } from 'vue';
-
-  const message = 'Hello Vue!';
-  const status = ref("pending");
-  const tasks = ref(["task one", "task two", "task three"]);
-  const link = "https://www.google.com/";
-
-  const newTask = ref('');
-
-  const toggleStatus = () => {
-    if (status.value === 'active') {
-      status.value = 'pending';
-    } else if (status.value === 'pending') {
-      status.value = 'inactive';
-    } else {
-      status.value = 'active';
-    }
-  };
-
-  const addTask = () => {
-    if (newTask.value.trim() !== '') {
-      tasks.value.push(newTask.value);
-      newTask.value = ''; // Clear the input field after adding the task
-    }
-  };
-
-  const deleteTask = (index) => {
-    tasks.value.splice(index, 1); // Remove the task at the specified index
-  };
-
-  onMounted(async() => {
-    try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
-      const data = await response.json();
-      tasks.value = data.slice(0, 5).map(todo => todo.title); // Fetching first 5 tasks
-    } catch (error) {
-      console.error('Error during fetching tasks:', error);
-      
-    }
-  });
+import Navbar from '@/components/Navbar.vue';
+import { RouterView } from 'vue-router';
+import Hero from './components/Hero.vue';
+import HomeCards from './components/HomeCards.vue';
+import JobListings from './components/JobListings.vue';
 </script>
-
 <template>
- <h1>{{message}} </h1>
- <p v-if="status==='active'">User is active</p>
- <p v-else-if="status==='pending'">User is pending</p>
- <p v-else>User is inactive</p>
-
- <form @submit.prevent="addTask">
-  <label for="newTask">Add Task</label>
-  <input type="text" id="newTask" name="newTask" v-model="newTask" />
-  <button type="submit">Submit</button>
- </form>
-
- <h3>tasks</h3>
- <ul>
-  <li v-for="(task,index) in tasks" :key="task">
-    <span>{{ task }}</span>
-    <button @click="deleteTask(index)">X</button>
-    </li>
- </ul>
-
- <a v-bind:href="link">Click for google</a>
-<br/>
- <!-- <button v-on:click="toggleStatus">Change Status</button> -->
- <button @click="toggleStatus">Change Status</button>
+   <Navbar />
+   <Hero title="Test Title" subtitle="Find the Vue job that fits your skills and needs"/>
+   <HomeCards/>
+   <JobListings :limit="3" :showButton="true"/>
 </template>
-
-<style scoped>
-
-
-</style>
